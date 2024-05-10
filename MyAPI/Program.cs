@@ -1,44 +1,40 @@
-var builder = WebApplication.CreateBuilder(args);
+using MyAPI.DTOS;
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+const string getCourseRouteName = "getCourse";
 
-app.UseHttpsRedirection();
+List<CourseDto> courses =
+[
+    new(1, "Math", "MATH101", "Introduction to Mathematics", 3, "John Doe"),
+    new(2, "Science", "SCI101", "Introduction to Science", 3, "Jane Doe"),
+    new(3, "History", "HIST101", "Introduction to History", 3, "John Smith"),
+    new(4, "English", "ENG101", "Introduction to English", 3, "Jane Smith")
+];
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.MapGet("courses", () => courses);
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.MapGet("courses/{id}", (int id) => courses.Find(x => x.id == id)).WithName(getCourseRouteName);
+
+app.MapPost(
+    "courses",
+    (createCourseDto newCourse) =>
+    {
+        CourseDto course =
+            new(
+                courses.Count + 1,
+                newCourse.courseName,
+                newCourse.courseCode,
+                newCourse.courseDescription,
+                newCourse.credits,
+                newCourse.instructor
+            );
+        courses.Add(course);
+
+        return Results.CreatedAtRoute(getCourseRouteName, new { id = course.id }, course);
+    }
+);
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
