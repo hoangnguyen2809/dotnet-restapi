@@ -1,0 +1,18 @@
+GET http://localhost:5036/courses
+
+###
+
+GET http://localhost:5036/courses/1
+
+###
+
+POST http://localhost:5036/courses
+Content-Type: application/json
+
+{
+    "courseName": "Computer Science",
+    "courseCode": "CMPT 276",
+    "courseDescription": "Software Engineering",
+    "courseCredits": 3,
+    "instructor": "Dr. Sagar Naik"
+}
