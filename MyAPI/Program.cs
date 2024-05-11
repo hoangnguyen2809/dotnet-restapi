@@ -37,4 +37,19 @@ app.MapPost(
     }
 );
 
+app.MapDelete(
+    "courses/{id}",
+    (int id) =>
+    {
+        CourseDto course = courses.Find(x => x.id == id);
+        if (course is null)
+        {
+            return Results.NotFound();
+        }
+
+        courses.Remove(course);
+        return Results.NoContent();
+    }
+);
+
 app.Run();
