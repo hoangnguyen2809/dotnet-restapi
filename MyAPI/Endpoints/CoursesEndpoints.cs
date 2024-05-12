@@ -6,15 +6,15 @@ public static class CoursesEndpoints
 
     private static readonly List<CourseDto> courses =
     [
-        new(1, "Math", "MATH101", "Introduction to Mathematics", 3, "John Doe"),
+        new(1, "Science", "MATH101", "Introduction to Mathematics", 3, "John Doe"),
         new(2, "Science", "SCI101", "Introduction to Science", 3, "Jane Doe"),
-        new(3, "History", "HIST101", "Introduction to History", 3, "John Smith"),
-        new(4, "English", "ENG101", "Introduction to English", 3, "Jane Smith")
+        new(3, "Art and Social Science", "HIST101", "Introduction to History", 3, "John Smith"),
+        new(4, "Art and Social Science", "ENG101", "Introduction to English", 3, "Jane Smith")
     ];
 
     public static RouteGroupBuilder MapCoursesEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("courses").WithParameterValidation();
+        var group = app.MapGroup("courses");
 
         group.MapGet("/", () => courses);
 
@@ -41,7 +41,7 @@ public static class CoursesEndpoints
                 CourseDto course =
                     new(
                         courses.Count + 1,
-                        newCourse.department,
+                        newCourse.falcuty,
                         newCourse.courseCode,
                         newCourse.courseDescription,
                         newCourse.credits,
@@ -53,30 +53,28 @@ public static class CoursesEndpoints
             }
         );
 
-        group
-            .MapPut(
-                "/{id}",
-                (int id, updateCourseDto updatedCourse) =>
+        group.MapPut(
+            "/{id}",
+            (int id, updateCourseDto updatedCourse) =>
+            {
+                int index = courses.FindIndex(x => x.id == id);
+                if (index == -1)
                 {
-                    int index = courses.FindIndex(x => x.id == id);
-                    if (index == -1)
-                    {
-                        return Results.NotFound();
-                    }
-
-                    courses[index] = new CourseDto(
-                        id,
-                        updatedCourse.department,
-                        updatedCourse.courseCode,
-                        updatedCourse.courseDescription,
-                        updatedCourse.credits,
-                        updatedCourse.instructor
-                    );
-
-                    return Results.NoContent();
+                    return Results.NotFound();
                 }
-            )
-            .WithParameterValidation();
+
+                courses[index] = new CourseDto(
+                    id,
+                    updatedCourse.falcuty,
+                    updatedCourse.courseCode,
+                    updatedCourse.courseDescription,
+                    updatedCourse.credits,
+                    updatedCourse.instructor
+                );
+
+                return Results.NoContent();
+            }
+        );
 
         group.MapDelete(
             "/{id}",
