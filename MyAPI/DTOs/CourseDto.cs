@@ -2,7 +2,7 @@
 
 public record class CourseDto(
     int id,
-    string falcuty,
+    string department,
     string courseCode,
     string courseDescription,
     int credits,
