@@ -1,3 +1,4 @@
+using MyAPI.Data;
 using MyAPI.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
