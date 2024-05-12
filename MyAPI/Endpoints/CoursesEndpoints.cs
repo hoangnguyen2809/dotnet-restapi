@@ -14,7 +14,7 @@ public static class CoursesEndpoints
 
     public static RouteGroupBuilder MapCoursesEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("courses");
+        var group = app.MapGroup("courses").WithParameterValidation();
 
         group.MapGet("/", () => courses);
 
