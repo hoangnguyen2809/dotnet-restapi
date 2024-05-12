@@ -6,5 +6,5 @@ namespace MyAPI.Data;
 public class Context(DbContextOptions<Context> options) : DbContext(options)
 {
     public DbSet<Course> Courses => Set<Course>();
-    public DbSet<Department> Departments => Set<Department>();
+    public DbSet<Falcuty> Departments => Set<Falcuty>();
 }
