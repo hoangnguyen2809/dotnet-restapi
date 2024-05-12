@@ -1,6 +1,6 @@
 ﻿namespace MyAPI.Entities;
 
-public class Department
+public class Falcuty
 {
     public int id { get; set; }
     public required string name { get; set; }
