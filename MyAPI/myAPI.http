@@ -1,0 +1,38 @@
+# Get list of courses
+GET http://localhost:5036/courses
+
+# Get list of falcuties
+GET http://localhost:5036/faculties
+
+# Get course by id 1
+GET http://localhost:5036/courses/1
+
+# Get faculty by id 1
+GET http://localhost:5036/faculties/1
+
+# Create a new course with facultyId 1
+POST http://localhost:5036/courses
+Content-Type: application/json
+
+{
+    "facultyId": 1,
+    "courseCode": "Course Code",
+    "courseDescription": "Course Description",
+    "credits": 3,
+    "instructor": "John Doe"
+}
+
+### Update course with id 1
+PUT http://localhost:5036/courses/1
+Content-Type: application/json
+
+{
+    "facultyId": 2,
+    "courseCode": "New course name",
+    "courseDescription": "Course Description",
+    "credits": 3,
+    "instructor": "Steve Doe"
+}
+
+### Delete course with id 1
+DELETE http://localhost:5036/courses/1
