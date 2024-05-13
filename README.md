@@ -27,6 +27,8 @@ PUT /courses/{id}: Update an existing course by providing its ID and the updated
 DELETE /courses/{id}: Delete a course by providing its ID.
 ```
 
+Example http file: [myAPI.http](MyAPI/myAPI.http)
+
 ## Dependencies
 - Microsoft.AspNetCore.OpenApi 8.0.4
 - Microsoft.EntityFrameworkCore.Design 8.0.4
