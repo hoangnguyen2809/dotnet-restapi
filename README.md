@@ -41,4 +41,4 @@ Example http file: [myAPI.http](MyAPI/myAPI.http)
 - Customize the mapping, entities, and DTOs according to your project requirements.
 
 ## Author:
-[Hoang Nguye](https://github.com/hoangnguyen2809)
+[Hoang Nguyen](https://github.com/hoangnguyen2809)
