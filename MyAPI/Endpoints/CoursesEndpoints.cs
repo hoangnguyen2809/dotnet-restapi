@@ -1,4 +1,5 @@
-﻿using MyAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MyAPI.Data;
 using MyAPI.Entities;
 using MyAPI.Mapping;
 
@@ -8,19 +9,18 @@ public static class CoursesEndpoints
 {
     const string getCourseRouteName = "getCourse";
 
-    private static readonly List<CourseSummaryDto> courses =
-    [
-        new(1, "Science", "MATH101", "Introduction to Mathematics", 3, "John Doe"),
-        new(2, "Science", "SCI101", "Introduction to Science", 3, "Jane Doe"),
-        new(3, "Art and Social Science", "HIST101", "Introduction to History", 3, "John Smith"),
-        new(4, "Art and Social Science", "ENG101", "Introduction to English", 3, "Jane Smith")
-    ];
-
     public static RouteGroupBuilder MapCoursesEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("courses").WithParameterValidation();
 
-        group.MapGet("/", () => courses);
+        group.MapGet(
+            "/",
+            (Context dbContext) =>
+                dbContext
+                    .Courses.Include(course => course.faculty)
+                    .Select(course => course.ToSummaryDto())
+                    .AsNoTracking()
+        );
 
         group
             .MapGet(
@@ -73,9 +73,9 @@ public static class CoursesEndpoints
 
         group.MapDelete(
             "/{id}",
-            (int id) =>
+            (int id, Context dbContext) =>
             {
-                courses.RemoveAll(course => course.id == id);
+                dbContext.Courses.Where(course => course.id == id).ExecuteDelete();
 
                 return Results.NoContent();
             }
