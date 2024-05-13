@@ -1,10 +1,14 @@
-﻿namespace MyAPI.DTOs;
+﻿using MyAPI.Data;
+using MyAPI.Entities;
+using MyAPI.Mapping;
+
+namespace MyAPI.DTOs;
 
 public static class CoursesEndpoints
 {
     const string getCourseRouteName = "getCourse";
 
-    private static readonly List<CourseDto> courses =
+    private static readonly List<CourseSummaryDto> courses =
     [
         new(1, "Science", "MATH101", "Introduction to Mathematics", 3, "John Doe"),
         new(2, "Science", "SCI101", "Introduction to Science", 3, "Jane Doe"),
@@ -21,57 +25,48 @@ public static class CoursesEndpoints
         group
             .MapGet(
                 "/{id}",
-                (int id) =>
+                (int id, Context dbContext) =>
                 {
-                    CourseDto? course = courses.Find(course => course.id == id);
+                    Course? course = dbContext.Courses.Find(id);
                     if (course == null)
                     {
                         return Results.NotFound();
                     }
 
-                    return Results.Ok(course);
+                    return Results.Ok(course.ToDetailsDto());
                 }
             )
             .WithName(getCourseRouteName);
 
         group.MapPost(
             "/",
-            (createCourseDto newCourse) =>
+            (createCourseDto newCourse, Context dbContext) =>
             {
-                CourseDto course =
-                    new(
-                        courses.Count + 1,
-                        newCourse.falcuty,
-                        newCourse.courseCode,
-                        newCourse.courseDescription,
-                        newCourse.credits,
-                        newCourse.instructor
-                    );
-                courses.Add(course);
+                Course course = newCourse.ToEntity();
 
-                return Results.CreatedAtRoute(getCourseRouteName, new { id = course.id }, course);
+                dbContext.Courses.Add(course);
+                dbContext.SaveChanges();
+
+                return Results.CreatedAtRoute(
+                    getCourseRouteName,
+                    new { id = course.id },
+                    course.ToDetailsDto()
+                );
             }
         );
 
         group.MapPut(
             "/{id}",
-            (int id, updateCourseDto updatedCourse) =>
+            (int id, updateCourseDto updatedCourse, Context dbContext) =>
             {
-                int index = courses.FindIndex(x => x.id == id);
-                if (index == -1)
+                var existingCourse = dbContext.Courses.Find(id);
+                if (existingCourse is null)
                 {
                     return Results.NotFound();
                 }
 
-                courses[index] = new CourseDto(
-                    id,
-                    updatedCourse.falcuty,
-                    updatedCourse.courseCode,
-                    updatedCourse.courseDescription,
-                    updatedCourse.credits,
-                    updatedCourse.instructor
-                );
-
+                dbContext.Entry(existingCourse).CurrentValues.SetValues(updatedCourse.ToEntity(id));
+                dbContext.SaveChanges();
                 return Results.NoContent();
             }
         );

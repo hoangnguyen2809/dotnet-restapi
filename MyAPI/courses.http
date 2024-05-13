@@ -10,9 +10,26 @@ POST http://localhost:5036/courses
 Content-Type: application/json
 
 {
-    "courseName": "Computer Science",
-    "courseCode": "CMPT 276",
-    "courseDescription": "Software Engineering",
-    "courseCredits": 3,
-    "instructor": "Dr. Sagar Naik"
+    "facultyId": 1,
+    "courseCode": "CMPT 295",
+    "courseDescription": "Intro to Computer System",
+    "credits": 3,
+    "instructor": "Aarhvin Naik"
 }
+
+###
+
+PUT http://localhost:5036/courses/1
+Content-Type: application/json
+
+{
+    "facultyId": 1,
+    "courseCode": "CMPT 363",
+    "courseDescription": "User Interface Design",
+    "credits": 3,
+    "instructor": "Victor Cheung"
+}
+
+###
+
+DELETE http://localhost:5036/courses/1

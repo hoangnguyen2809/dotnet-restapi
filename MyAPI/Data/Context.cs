@@ -6,12 +6,12 @@ namespace MyAPI.Data;
 public class Context(DbContextOptions<Context> options) : DbContext(options)
 {
     public DbSet<Course> Courses => Set<Course>();
-    public DbSet<Falcuty> Departments => Set<Falcuty>();
+    public DbSet<Faculty> Faculties => Set<Faculty>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .Entity<Falcuty>()
+            .Entity<Faculty>()
             .HasData(
                 new { id = 1, name = "Applied Sciences" },
                 new { id = 2, name = "Arts and Social Sciences" },

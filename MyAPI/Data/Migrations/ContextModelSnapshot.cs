@@ -32,20 +32,20 @@ namespace MyAPI.Data.Migrations
                     b.Property<int>("credits")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("falcutyId")
+                    b.Property<int>("facultyId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("instructor")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("instructor")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("id");
 
-                    b.HasIndex("falcutyId");
+                    b.HasIndex("facultyId");
 
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("MyAPI.Entities.Falcuty", b =>
+            modelBuilder.Entity("MyAPI.Entities.Faculty", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -57,7 +57,7 @@ namespace MyAPI.Data.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Faculties");
 
                     b.HasData(
                         new
@@ -104,13 +104,13 @@ namespace MyAPI.Data.Migrations
 
             modelBuilder.Entity("MyAPI.Entities.Course", b =>
                 {
-                    b.HasOne("MyAPI.Entities.Falcuty", "falcuty")
+                    b.HasOne("MyAPI.Entities.Faculty", "faculty")
                         .WithMany()
-                        .HasForeignKey("falcutyId")
+                        .HasForeignKey("facultyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("falcuty");
+                    b.Navigation("faculty");
                 });
 #pragma warning restore 612, 618
         }
