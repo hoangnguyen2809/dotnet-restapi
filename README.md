@@ -39,3 +39,6 @@ Example http file: [myAPI.http](MyAPI/myAPI.http)
 - This application uses ASP.NET Core Minimal APIs for routing and handling HTTP requests.
 - Ensure that the database connection string is properly configured in the appsettings.json file.
 - Customize the mapping, entities, and DTOs according to your project requirements.
+
+## Author:
+[Hoang Nguye](https://github.com/hoangnguyen2809)
