@@ -15,19 +15,20 @@ public static class CoursesEndpoints
 
         group.MapGet(
             "/",
-            (Context dbContext) =>
-                dbContext
+            async (Context dbContext) =>
+                await dbContext
                     .Courses.Include(course => course.faculty)
                     .Select(course => course.ToSummaryDto())
                     .AsNoTracking()
+                    .ToListAsync()
         );
 
         group
             .MapGet(
                 "/{id}",
-                (int id, Context dbContext) =>
+                async (int id, Context dbContext) =>
                 {
-                    Course? course = dbContext.Courses.Find(id);
+                    Course? course = await dbContext.Courses.FindAsync(id);
                     if (course == null)
                     {
                         return Results.NotFound();
@@ -40,12 +41,12 @@ public static class CoursesEndpoints
 
         group.MapPost(
             "/",
-            (createCourseDto newCourse, Context dbContext) =>
+            async (createCourseDto newCourse, Context dbContext) =>
             {
                 Course course = newCourse.ToEntity();
 
                 dbContext.Courses.Add(course);
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync();
 
                 return Results.CreatedAtRoute(
                     getCourseRouteName,
@@ -57,25 +58,25 @@ public static class CoursesEndpoints
 
         group.MapPut(
             "/{id}",
-            (int id, updateCourseDto updatedCourse, Context dbContext) =>
+            async (int id, updateCourseDto updatedCourse, Context dbContext) =>
             {
-                var existingCourse = dbContext.Courses.Find(id);
+                var existingCourse = await dbContext.Courses.FindAsync(id);
                 if (existingCourse is null)
                 {
                     return Results.NotFound();
                 }
 
                 dbContext.Entry(existingCourse).CurrentValues.SetValues(updatedCourse.ToEntity(id));
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync();
                 return Results.NoContent();
             }
         );
 
         group.MapDelete(
             "/{id}",
-            (int id, Context dbContext) =>
+            async (int id, Context dbContext) =>
             {
-                dbContext.Courses.Where(course => course.id == id).ExecuteDelete();
+                await dbContext.Courses.Where(course => course.id == id).ExecuteDeleteAsync();
 
                 return Results.NoContent();
             }
