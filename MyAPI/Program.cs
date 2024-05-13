@@ -10,6 +10,6 @@ var app = builder.Build();
 
 app.MapCoursesEndpoints();
 
-app.MigrateDatabase();
+await app.MigrateDatabaseAsync();
 
 app.Run();
