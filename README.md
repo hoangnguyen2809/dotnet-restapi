@@ -14,7 +14,7 @@ This project is a simple REST API application built using ASP.NET Core Minimal A
 
 ## Usage:
 Once the application is running, you can interact with the following endpoints:
-
+```
 GET /courses: Retrieve a list of all courses.
 GET /faculties: Retrieve a list of all faculties.
 GET /courses/{id}: Retrieve details of a specific course by providing its ID.
@@ -25,14 +25,15 @@ POST /courses: Create a new course by providing the necessary data in the reques
 PUT /courses/{id}: Update an existing course by providing its ID and the updated data in the request body.
 
 DELETE /courses/{id}: Delete a course by providing its ID.
+```
 
 ## Dependencies
-Microsoft.AspNetCore.OpenApi 8.0.4
-Microsoft.EntityFrameworkCore.Design 8.0.4
-Microsoft.EntityFrameworkCore.Sqlite 8.0.0
-MinimalApis.Extensions 0.11.0
+- Microsoft.AspNetCore.OpenApi 8.0.4
+- Microsoft.EntityFrameworkCore.Design 8.0.4
+- Microsoft.EntityFrameworkCore.Sqlite 8.0.0
+- MinimalApis.Extensions 0.11.0
 
 ## Notes:
-This application uses ASP.NET Core Minimal APIs for routing and handling HTTP requests.
-Ensure that the database connection string is properly configured in the appsettings.json file.
-Customize the mapping, entities, and DTOs according to your project requirements.
+- This application uses ASP.NET Core Minimal APIs for routing and handling HTTP requests.
+- Ensure that the database connection string is properly configured in the appsettings.json file.
+- Customize the mapping, entities, and DTOs according to your project requirements.
