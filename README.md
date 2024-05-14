@@ -40,5 +40,3 @@ Example http file: [myAPI.http](MyAPI/myAPI.http)
 - Ensure that the database connection string is properly configured in the appsettings.json file.
 - Customize the mapping, entities, and DTOs according to your project requirements.
 
-## Author:
-[Hoang Nguyen](https://github.com/hoangnguyen2809)
